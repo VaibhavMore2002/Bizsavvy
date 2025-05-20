@@ -117,18 +117,14 @@ const AuthLayout = ({ children }) => {
       {/* Left content side */}
       <div className="w-full md:w-1/2 lg:w-[45%] px-6 md:px-12 py-8 md:py-10 flex flex-col">
         {/* Top navigation */}
-        <div className="flex justify-between items-center mb-8 md:mb-16">
+        <div className="flex justify-between items-center mb-4 md:mb-8">
           <div className="flex items-center">
             <div className="w-10 h-10 bg-[#8A3FFC] rounded-lg flex items-center justify-center mr-3">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 5V19M5 12H19" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-black">Finbuzz</h2>
-          </div>
-          <div className="flex items-center space-x-4">
-            <a href="#" className="text-gray-500 hover:text-gray-700">Help</a>
-            <a href="#" className="text-[#8A3FFC] hover:text-[#7433E0] font-medium">Contact</a>
+            <h2 className="text-xl font-bold text-black">BIZSAVVY</h2>
           </div>
         </div>
         
@@ -140,7 +136,7 @@ const AuthLayout = ({ children }) => {
         {/* Footer */}
         <div className="pt-8 md:pt-12">
           <div className="flex justify-between items-center">
-            <p className="text-sm text-gray-500">© 2025 Expense Tracker. All rights reserved.</p>
+            <p className="text-sm text-gray-500">© 2025 BIZSAVVY. All rights reserved.</p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-500 hover:text-gray-700">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

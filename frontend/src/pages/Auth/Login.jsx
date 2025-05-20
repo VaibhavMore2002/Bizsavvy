@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { Eye, EyeOff } from 'lucide-react';
+import { validateEmail } from '../../utils/helper';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle login logic here
-    console.log('Login attempt with:', { email, password, rememberMe });
+    if(!validateEmail(email)){
+      setError("Please enter a valid email address");
+      return;
+    }
+    if(!password){
+      setError("Please enter a valid password");
+      return;
+    }
+    // console.log('Login attempt with:', { email, password, rememberMe });
+    setError("");
   };
 
   return (
@@ -72,24 +82,7 @@ const Login = () => {
               </button>
             </div>
           </div>
-
-          {/* Remember me checkbox */}
-          <div className="flex items-center">
-            <div className="relative flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-                className="h-4 w-4 text-[#8A3FFC] focus:ring-[#8A3FFC] border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600">
-                Remember me for 30 days
-              </label>
-            </div>
-          </div>
-
+          
           {/* Login button */}
           <button
             type="submit"
@@ -107,7 +100,7 @@ const Login = () => {
           {/* Sign up link */}
           <div className="text-center pt-4">
             <p className="text-gray-600">
-              Don't have an account? <a href="#" className="font-medium text-[#8A3FFC] hover:text-[#7433E0] hover:underline transition-colors">Create Account</a>
+              Don't have an account? <Link className="font-medium text-[#8A3FFC] hover:text-[#7433E0] hover:underline transition-colors" to="/signup">Create Account</Link>
             </p>
           </div>
         </form>
