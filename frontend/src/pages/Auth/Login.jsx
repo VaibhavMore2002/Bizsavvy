@@ -1,27 +1,67 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { Eye, EyeOff } from 'lucide-react';
 import { validateEmail } from '../../utils/helper';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPaths';
+import { UserContext } from '../../context/userContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const {updateUser}=useContext(UserContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
+    setIsLoading(true);
+    setError('');
+    
+    // Validation
     if(!validateEmail(email)){
       setError("Please enter a valid email address");
+      setIsLoading(false);
       return;
     }
     if(!password){
       setError("Please enter a valid password");
+      setIsLoading(false);
       return;
     }
-    // console.log('Login attempt with:', { email, password, rememberMe });
-    setError("");
+
+    try{
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+      
+      const { token, user } = response.data;
+      
+      if(token){
+        localStorage.setItem("token", token);
+        updateUser(user);
+        if(user) {
+          localStorage.setItem("user", JSON.stringify(user));
+        }
+        navigate('/dashboard');
+      }
+    } catch(error) {
+      console.error('Login error:', error);
+      if(error.response && error.response.data && error.response.data.message){
+        setError(error.response.data.message);
+      } else if(error.response && error.response.status === 401) {
+        setError("Invalid email or password");
+      } else if(error.response && error.response.status >= 500) {
+        setError("Server error. Please try again later");
+      } else {
+        setError("Something went wrong. Please try again");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -31,7 +71,13 @@ const Login = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-3">Welcome Back</h1>
           <p className="text-gray-600">Please enter your details to access your account</p>
         </div>
-
+        
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit} className="w-full space-y-6">
           {/* Email input */}
           <div className="space-y-2">
@@ -49,6 +95,7 @@ const Login = () => {
                 className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#8A3FFC] focus:border-transparent transition-all duration-200"
                 placeholder="vaibhav.more@gmail.com"
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -72,11 +119,13 @@ const Login = () => {
                 className="w-full pl-10 pr-12 py-3 bg-white border border-gray-200 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#8A3FFC] focus:border-transparent transition-all duration-200"
                 placeholder="••••••••"
                 required
+                disabled={isLoading}
               />
               <button 
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                disabled={isLoading}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -86,9 +135,20 @@ const Login = () => {
           {/* Login button */}
           <button
             type="submit"
-            className="w-full py-3 px-4 flex justify-center items-center bg-[#8A3FFC] hover:bg-[#7433E0] text-white font-bold rounded-xl transition duration-200 shadow-md hover:shadow-lg"
+            disabled={isLoading}
+            className="w-full py-3 px-4 flex justify-center items-center bg-[#8A3FFC] hover:bg-[#7433E0] text-white font-bold rounded-xl transition duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Login to Your Account
+            {isLoading ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Logging in...
+              </>
+            ) : (
+              'Login to Your Account'
+            )}
           </button>
 
           {/* OR divider */}
