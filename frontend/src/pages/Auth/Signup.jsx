@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Eye, EyeOff, ArrowRight, User, CheckCircle, Briefcase, ChevronLeft } from 'lucide-react';
 import AuthLayout from '../../components/layouts/AuthLayout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { validateEmail } from '../../utils/helper';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPaths';
+import { UserContext } from '../../context/userContext';
 
 export default function SignupComponent() {
   const [step, setStep] = useState(1);
@@ -19,10 +23,93 @@ export default function SignupComponent() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const { updateUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleRoleSelect = (selectedRole) => {
     setRole(selectedRole);
     setStep(2);
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.fullName.trim()) {
+      setErrors({ general: "Please enter your name" });
+      return;
+    }
+    if (!validateEmail(formData.email)) {
+      setErrors({ general: "Please enter a valid email address" });
+      return;
+    }
+    if (!formData.password) {
+      setErrors({ general: "Please enter the password" });
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setErrors({ general: "Passwords do not match" });
+      return;
+    }
+
+    // CA-specific validations
+    if (role === 'ca') {
+      if (!formData.licenseNumber.trim()) {
+        setErrors({ general: "Please enter your license number" });
+        return;
+      }
+      if (!formData.yearOfRegistration.trim()) {
+        setErrors({ general: "Please enter your year of registration" });
+        return;
+      }
+      if (!formData.practiceArea.trim()) {
+        setErrors({ general: "Please select your practice area" });
+        return;
+      }
+    }
+
+    setErrors({});
+    setIsLoading(true);
+
+    try {
+      const registrationData = {
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        role: role
+      };
+
+      // Add CA-specific fields if role is CA
+      if (role === 'ca') {
+        registrationData.licenseNumber = formData.licenseNumber;
+        registrationData.yearOfRegistration = formData.yearOfRegistration;
+        registrationData.practiceArea = formData.practiceArea;
+      }
+
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, registrationData);
+      
+      const { token, user } = response.data;
+      
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        setStep(5); // Show success message
+        
+        // Navigate to dashboard after a short delay
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+      }
+
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setErrors({ general: error.response.data.message });
+      } else {
+        setErrors({ general: "Something went wrong! Please try again." });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (e) => {
@@ -37,6 +124,13 @@ export default function SignupComponent() {
       setErrors({
         ...errors,
         [name]: ''
+      });
+    }
+    // Clear general errors when user starts typing
+    if (errors.general) {
+      setErrors({
+        ...errors,
+        general: ''
       });
     }
   };
@@ -99,11 +193,7 @@ export default function SignupComponent() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app, you would submit the form data to your backend here
-    console.log('Form submitted:', { role, ...formData });
-    
-    // Show success message
-    setStep(5);
+    handleSignUp(e);
   };
 
   // Progress steps renderer
@@ -187,6 +277,12 @@ export default function SignupComponent() {
             </button>
 
             <h1 className="text-3xl font-bold text-gray-900 mb-6">Create your account</h1>
+            
+            {errors.general && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-600">{errors.general}</p>
+              </div>
+            )}
             
             <form className="space-y-5">
               <div>
@@ -330,6 +426,12 @@ export default function SignupComponent() {
 
             <h1 className="text-3xl font-bold text-gray-900 mb-2">CA Verification</h1>
             <p className="text-gray-600 mb-6">Please provide your professional details</p>
+            
+            {errors.general && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-600">{errors.general}</p>
+              </div>
+            )}
             
             <form className="space-y-5">
               <div>
