@@ -26,7 +26,7 @@ const FinancialDashboard = () => {
           </div>
           <div>
             <p className="text-gray-500 text-sm">Track Your Income & Expenses</p>
-            <p className="text-2xl font-bold">$430,000</p>
+            <p className="text-2xl font-bold">₹430,000</p>
           </div>
         </div>
         
@@ -39,7 +39,7 @@ const FinancialDashboard = () => {
           </div>
           <div>
             <p className="text-gray-500 text-sm">Net Savings</p>
-            <p className="text-2xl font-bold">$124,500</p>
+            <p className="text-2xl font-bold">₹124,500</p>
           </div>
         </div>
       </div>
@@ -48,13 +48,13 @@ const FinancialDashboard = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {/* Quick stats */}
         {[
-          { label: 'Income', value: '$36,240', color: 'bg-purple-500' },
-          { label: 'Expenses', value: '$28,150', color: 'bg-red-500' },
+          { label: 'Income', value: '₹36,240', color: 'bg-purple-500' },
+          { label: 'Expenses', value: '₹28,150', color: 'bg-red-500' },
           { label: 'Savings', value: '18%', color: 'bg-green-500' },
-          { label: 'Budget', value: '$40,000', color: 'bg-blue-500' }
+          { label: 'Budget', value: '₹40,000', color: 'bg-blue-500' }
         ].map((stat, index) => (
           <div key={index} className="bg-white rounded-xl shadow-md p-3">
-            <div className={`w-2 h-2 rounded-full ${stat.color} mb-2`}></div>
+            <div className={`w-2 h-2 rounded-full ₹{stat.color} mb-2`}></div>
             <p className="text-xs text-gray-500">{stat.label}</p>
             <p className="text-lg font-bold">{stat.value}</p>
           </div>
@@ -98,10 +98,10 @@ const FinancialDashboard = () => {
               <Line 
                 type="monotone" 
                 dataKey="expenses" 
-                stroke="#E5DBFF" 
+                stroke="#FF0000" 
                 strokeWidth={3}
-                dot={{ stroke: '#E5DBFF', strokeWidth: 2, r: 4, fill: 'white' }}
-                activeDot={{ r: 6, fill: '#E5DBFF' }}
+                dot={{ stroke: '#FF0000', strokeWidth: 2, r: 4, fill: 'white' }}
+                activeDot={{ r: 6, fill: '#FF0000' }}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -196,7 +196,7 @@ const AuthLayout = ({ children }) => {
               </div>
               <div>
                 <p className="font-bold text-sm">Payment Received!</p>
-                <p className="text-xs text-gray-500">$2,500 from Client X</p>
+                <p className="text-xs text-gray-500">₹2,500 from Client X</p>
               </div>
             </div>
           </div>
