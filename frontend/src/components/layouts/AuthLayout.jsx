@@ -3,13 +3,13 @@ import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'rec
 
 // Sample data for the chart
 const monthlyData = [
-  { name: 'Jan', income: 320, expenses: 240 },
-  { name: 'Feb', income: 300, expenses: 198 },
-  { name: 'Mar', income: 340, expenses: 280 },
-  { name: 'Apr', income: 380, expenses: 310 },
-  { name: 'May', income: 400, expenses: 320 },
-  { name: 'Jun', income: 420, expenses: 380 },
-  { name: 'Jul', income: 380, expenses: 290 }
+  { name: 'Jan', income: 3200, expenses: 2400 },
+  { name: 'Feb', income: 3000, expenses: 1980 },
+  { name: 'Mar', income: 3400, expenses: 2800 },
+  { name: 'Apr', income: 3800, expenses: 3100 },
+  { name: 'May', income: 4000, expenses: 3200 },
+  { name: 'Jun', income: 4200, expenses: 3800 },
+  { name: 'Jul', income: 3800, expenses: 2900 }
 ];
 
 const FinancialDashboard = () => {
@@ -26,7 +26,7 @@ const FinancialDashboard = () => {
           </div>
           <div>
             <p className="text-gray-500 text-sm">Track Your Income & Expenses</p>
-            <p className="text-2xl font-bold">₹430,000</p>
+            <p className="text-2xl font-bold">₹4,30,000</p>
           </div>
         </div>
         
@@ -196,8 +196,8 @@ const AuthLayout = ({ children }) => {
               </div>
               <div>
                 <p className="font-bold text-sm">Payment Received!</p>
-                <p className="text-xs text-gray-500">₹2,500 from Client X</p>
-              </div>
+                <p className="text-xs text-gray-500">₹25,000 from Client</p>
+              </div> 
             </div>
           </div>
         </div>
