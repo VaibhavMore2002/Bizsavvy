@@ -447,7 +447,7 @@ export default function SignupComponent() {
                   className={`block w-full px-3 py-3 border ${
                     errors.licenseNumber ? 'border-red-500' : 'border-gray-200'
                   } rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8A3FFC] focus:border-transparent`}
-                  placeholder="CA12345678"
+                  placeholder="ACA/123456 or 345678"
                 />
                 {errors.licenseNumber && (
                   <p className="mt-1 text-sm text-red-600">{errors.licenseNumber}</p>
