@@ -39,7 +39,7 @@ const SideMenu = ({activeMenu}) => {
                         style="text-xl"
                     />
                 )}
-                <h5 className="text-gray-950 font-medium leading-6">{user?.fullname || ""}</h5> 
+                <h5 className="text-gray-950 font-medium leading-6">{user?.fullName || ""}</h5>
             </div> 
             {SIDE_MENU_DATA.map((item, index) => {
                 const isActive = activeMenu === item.label;    
