@@ -13,4 +13,4 @@ const CustomTooltip = ({active,payload}) => {
     }
 }
 
-export default CustomTooltip
+export default CustomTooltip;
