@@ -6,7 +6,7 @@ import Navbar from './Navbar';
 const DashboardLayout = ({children,activeMenu}) => {
     const {user}=useContext(UserContext)
     return (
-        <div className="">
+        <div className="bg-secondary">
             <Navbar activeMenu={activeMenu}/>
             {user &&(
                 <div className='flex'>

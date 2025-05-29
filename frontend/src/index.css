@@ -5,6 +5,7 @@
   --font-display: "Poppins","sans-serif";
   --breakpoint-3xl: 1920px;
   --color-primary: #875cf5;
+  --color-secondary:#f2edfe;
 }
 
 @layer base{
