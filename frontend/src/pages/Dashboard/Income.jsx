@@ -3,6 +3,8 @@ import DashboardLayout from '../../components/layouts/DashboardLayout'
 import IncomeOverview from '../../components/Income/IncomeOverview';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
+import Modal from '../../components/Modal';
+import AddIncomeForm from '../../components/Income/AddIncomeForm';
 
 const Income = () => {
   const [incomeData,setIncomeData]=useState([]);
@@ -45,7 +47,7 @@ const Income = () => {
     fetchIncomeDetails();
     return ()=>{};
   },[]);
-  
+
   return (
     <DashboardLayout activeMenu="Income">
       <div className="my-5 mx-auto">
@@ -57,6 +59,13 @@ const Income = () => {
             />
           </div>
         </div>
+        <Modal
+          isOpen={OpenAddIncomeModal}
+          onClose={()=>setOpenAddIncomeModal(false)}
+          title="Add Income"
+        >
+          <AddIncomeForm onAddIncome={handleAddIncome}/>
+        </Modal>
       </div>
     </DashboardLayout>
   )
