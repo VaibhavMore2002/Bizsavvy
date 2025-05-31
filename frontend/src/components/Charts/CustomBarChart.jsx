@@ -47,4 +47,4 @@ const CustomBarChart = ({data}) => {
     )
 };
 
-export default CustomBarChart
+export default CustomBarChart;
