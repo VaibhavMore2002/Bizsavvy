@@ -40,13 +40,13 @@ const AddIncomeForm = ({onAddIncome}) => {
 
         <div className="mb-4">
           <label htmlFor="amount" className="block text-sm font-medium mb-2">
-            Amount
+            Enter Amount in Rs
           </label>
           <input
             id="amount"
             value={income.amount}
             onChange={({target}) => handleChange("amount", target.value)}
-            placeholder="Enter amount"
+            placeholder="₹10,000"
             type="number"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
